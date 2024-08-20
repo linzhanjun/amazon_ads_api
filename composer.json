@@ -1,5 +1,5 @@
 {
-    "name": "lai3221/amzn_adv_api_php",
+    "name": "lzj/amazon_ads_api",
     "type": "library",
     "description": "Amazon Advertising API Client Library V3.0",
     "keywords": [
@@ -16,8 +16,8 @@
     "minimum-stability": "dev",
     "authors": [
         {
-            "name": "Lapaphy",
-            "email": "lai3221@163.com"
+            "name": "linzhanjun",
+            "email": "linzhanjun@sailvan.com"
         }
     ],
     "autoload": {
