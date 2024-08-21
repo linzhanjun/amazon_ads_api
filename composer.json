@@ -1,15 +1,14 @@
 {
     "name": "lzj/amazon_ads_api",
     "type": "library",
-    "description": "Amazon Advertising API Client Library V3.0",
+    "description": "Amazon Advertising API Client Library",
     "keywords": [
         "amazon",
         "advertising",
         "client",
         "library",
         "php",
-        "sdk",
-        "V3.0"
+        "sdk"
     ],
     "homepage": "https://advertising.amazon.com/",
     "license": "Apache-2.0",
