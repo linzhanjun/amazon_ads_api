@@ -1,12 +1,12 @@
 <?php
 
-namespace AmazonAdvertisingApi;
+namespace AmazonAdsApi;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 /**
  * Class AmazonAdvServiceProvider
- * @package AmazonAdvertisingApi
+ * @package AmazonAdsApi
  * @author Misolai <lai3221@163.com>
  * @date Date 2022/2/24   15:21
  */

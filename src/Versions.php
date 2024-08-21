@@ -1,6 +1,6 @@
 <?php
 
-namespace AmazonAdvertisingApi;
+namespace AmazonAdsApi;
 
 /**
  * Class Versions
