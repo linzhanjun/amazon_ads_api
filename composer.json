@@ -1,5 +1,5 @@
 {
-    "name": "lzj/amazon_ads_api",
+    "name": "lzj/amazon-ads-api",
     "type": "library",
     "description": "Amazon Advertising API Client Library",
     "keywords": [
