@@ -54,6 +54,7 @@ class Client
         'curlProxy' => '',
         'appUserAgent' => '',
         'headerAccept' => '',
+        'profileId' => 0,
     ];
 
     private $apiVersion;
@@ -72,6 +73,7 @@ class Client
     private $endpoints;
     private $versionStrings;
     private $headerAccept;
+    private $tokenTimeOut = null;
     public $profileId = null;
     public $headers = [];
 
@@ -96,12 +98,21 @@ class Client
         $this->applicationVersion = $this->versionStrings['applicationVersion'];
         $this->userAgent = $config['appUserAgent'];
         $this->headerAccept = $config['headerAccept'] ?? '';
+        $this->tokenTimeOut = $config['tokenTimeOut'] ?? null;
         $this->validateConfig($config);
         $this->validateConfigParameters();
         $this->setEndpoints();
 
         if (is_null($this->config['accessToken']) && !is_null($this->config['refreshToken'])) {
             $this->doRefreshToken();
+        }
+
+        if (isset($config['profileId'])) {
+            $this->profileId = $config['profileId'] ?? null;
+        }
+
+        if ($this->tokenTimeOut) {
+            $this->checkTokenTimeOut();
         }
     }
 
@@ -113,6 +124,13 @@ class Client
     {
         if (isset($this->{$name})) {
             $this->{$name} = $value;
+        }
+    }
+
+    public function checkTokenTimeOut()
+    {
+        if (date('Y-m-d H:i:s') > $this->tokenTimeOut) {
+            $this->logAndThrow("Token time outed.");
         }
     }
 
@@ -314,6 +332,7 @@ class Client
                     }
                     break;
                 case 'refreshToken':
+		    return true;
                     if (!is_null($v)) {
                         if (!preg_match("/^Atzr(\||%7C|%7c).*$/", $v)) {
                             $this->logAndThrow('Invalid parameter value for refreshToken.');

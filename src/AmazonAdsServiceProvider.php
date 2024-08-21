@@ -10,7 +10,7 @@ use Illuminate\Support\ServiceProvider as BaseServiceProvider;
  * @author Misolai <lai3221@163.com>
  * @date Date 2022/2/24   15:21
  */
-class AmazonAdvServiceProvider extends BaseServiceProvider
+class AmazonAdsServiceProvider extends BaseServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
@@ -26,14 +26,15 @@ class AmazonAdvServiceProvider extends BaseServiceProvider
      */
     public function register()
     {
-        $configPath = __DIR__ . '/config/amazon_adv_api.php';
-        $this->mergeConfigFrom($configPath, 'amazon_adv_api');
+        $configPath = __DIR__ . '/config/amazon_ads_api.php';
+        $this->mergeConfigFrom($configPath, 'amazon_ads_api');
     }
 
     public function boot()
     {
-        $configPath = __DIR__ . '/config/amazon_adv_api.php';
-        $this->publishes([$configPath => config_path('amazon_adv_api.php')], 'config');
+        $this->app->singleton('AmazonAdsApi', function() {
+            return new Client(config('amazon_ads_api'));
+        });
     }
 
     /**
