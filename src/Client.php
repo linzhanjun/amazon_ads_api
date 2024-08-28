@@ -26,6 +26,7 @@ class Client
     use HistoryRequests;
     use PostsRequests;
     use ExportsRequests;
+    use MarketingStream;
 
     public const CAMPAIGN_TYPE_SPONSORED_PRODUCTS_FULL = 'sponsoredProducts';
     public const CAMPAIGN_TYPE_SPONSORED_BRANDS_FULL = 'sponsoredBrands';
@@ -76,6 +77,7 @@ class Client
     private $tokenTimeOut = null;
     public $profileId = null;
     public $headers = [];
+    private $versions = null;
 
     /**
      * Client constructor.
@@ -87,8 +89,8 @@ class Client
         $this->config = $config;
         $regions = new Regions();
         $this->endpoints = $regions->endpoints;
-        $versions = new Versions();
-        $this->versionStrings = $versions->versionStrings;
+        $this->versions = new Versions();
+        $this->versionStrings = $this->versions->versionStrings;
         $this->apiVersion = $config['apiVersion'] ?? '';
         $this->sbVersion = $config['sdVersion'] ?? '';
         $this->spVersion = $config['spVersion'] ?? '';
@@ -204,17 +206,14 @@ class Client
         if (!is_null($this->profileId)) {
             $headers[] = 'Amazon-Advertising-API-Scope: ' . $this->profileId;
         }
-        if ($this->headerAccept) {
-            if ($needAccept) {
-                $headers[] = 'Accept: ' . $this->headerAccept;
-            }
-            $headers[] = 'Content-Type: ' . $this->headerAccept;
-        }
+        $headers[] = 'Accept: application/' . $this->versions->getVersionJson('/' . $interface);
+        $headers[] = 'Content-Type: application/' . $this->versions->getVersionJson('/' . $interface);
         $this->headers = $headers;
         $request = new CurlRequest($this->config);
         $this->endpoint = trim($this->endpoint, "/");
         $url = "$this->endpoint/$interface";
         $this->requestId = null;
+        $request->method = $method;
         switch (strtolower($method)) {
             case 'get':
                 if (!empty($params)) {

@@ -10,6 +10,7 @@ class CurlRequest
 {
     private $handle;
     public $requestId = null;
+    public $method = 'GET';
 
     public function __construct($config)
     {
