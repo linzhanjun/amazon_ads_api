@@ -78,6 +78,7 @@ class Client
     public $profileId = null;
     public $headers = [];
     private $versions = null;
+    protected $debug = false;
 
     /**
      * Client constructor.
@@ -134,6 +135,11 @@ class Client
         if (date('Y-m-d H:i:s') > $this->tokenTimeOut) {
             $this->logAndThrow("Token time outed.");
         }
+    }
+
+    public function setDebug(bool $debug = false)
+    {
+        $this->debug = $debug;
     }
 
     /**
@@ -208,6 +214,10 @@ class Client
         }
         $headers[] = 'Accept: application/' . $this->versions->getVersionJson('/' . $interface);
         $headers[] = 'Content-Type: application/' . $this->versions->getVersionJson('/' . $interface);
+        if ($this->debug) {
+            print_r($headers);
+            print_r($params);
+        }
         $this->headers = $headers;
         $request = new CurlRequest($this->config);
         $this->endpoint = trim($this->endpoint, "/");
@@ -257,25 +267,27 @@ class Client
             /* application/octet-stream */
             return $this->download($response_info['redirect_url'], true);
         }
-
+        $json = json_decode($response, true);
         if (!preg_match('/^(2|3)\d{2}$/', $response_info['http_code'])) {
-            $json = json_decode($response, true);
-            return array(
+            $result = array(
                 'success' => false,
                 'code' => $response_info['http_code'],
                 'response' => is_array($response) ? $response : $json,
-                'responseInfo' => $response_info,
                 'requestId' => $this->requestId
             );
         } else {
-            return array(
+            $result = array(
                 'success' => true,
                 'code' => $response_info['http_code'],
-                'responseInfo' => $response_info,
-                'response' => $response,
+                'response' => is_array($response) ? $response : $json,
                 'requestId' => $this->requestId
             );
+
         }
+        if ($this->debug) {
+            $result['responseInfo'] = $response_info;
+        }
+        return $result;
     }
 
     /**

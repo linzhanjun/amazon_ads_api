@@ -460,4 +460,16 @@ trait SponsoredDisplayRequests
     {
         return $this->operation("/sd/suggestedProducts/productReadinessStatus", $data, "POST");
     }
+
+    /**
+     * Gets a list of recommended budgets for a campaign.
+     * @see https://advertising.amazon.com/API/docs/en-us/sponsored-display/3-0/openapi#/Budget%20recommendations/getSDBudgetRecommendations
+     * @param null $data
+     * @return array
+     * @throws Exception
+     */
+    public function getSDBudgetRecommendations($data)
+    {
+        return $this->operation("sd/campaigns/budgetRecommendations", $data, "POST");
+    }
 }
