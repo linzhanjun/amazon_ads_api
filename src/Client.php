@@ -142,51 +142,15 @@ class Client
         $this->debug = $debug;
     }
 
+
     /**
      * @return array
      * @throws Exception
      */
-    public function doRefreshToken(): array
+    public function doRefreshToken($refresh_token)
     {
-        $headers = array(
-            'Content-Type: application/x-www-form-urlencoded;charset=UTF-8',
-            "User-Agent: $this->userAgent"
-        );
+        $this->config['accessToken'] = $refresh_token;
 
-        $refresh_token = rawurldecode($this->config['refreshToken']);
-
-        $params = array(
-            'grant_type' => 'refresh_token',
-            'refresh_token' => $refresh_token,
-            'client_id' => $this->config['clientId'],
-            'client_secret' => $this->config['clientSecret']
-        );
-
-        $data = "";
-        foreach ($params as $k => $v) {
-            $data .= "$k=" . rawurlencode($v) . "&";
-        }
-
-        $url = "https://$this->tokenUrl";
-
-        $request = new CurlRequest($this->config);
-        $request->setOption(CURLOPT_URL, $url);
-        $request->setOption(CURLOPT_HTTPHEADER, $headers);
-        $request->setOption(CURLOPT_USERAGENT, $this->userAgent);
-        $request->setOption(CURLOPT_POST, true);
-        $request->setOption(CURLOPT_POSTFIELDS, rtrim($data, "&"));
-
-        $response = $this->executeRequest($request);
-
-        $response_array = json_decode($response['response'], true);
-        if (is_array($response_array) && array_key_exists("access_token", $response_array)) {
-            $this->config['accessToken'] = $response_array['access_token'];
-        } else {
-            $this->logAndThrow("Unable to refresh token. 'access_token' not found in response. " . print_r($response,
-                    true));
-        }
-
-        return $response;
     }
 
     /**
