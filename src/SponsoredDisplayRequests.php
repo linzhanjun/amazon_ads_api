@@ -472,4 +472,16 @@ trait SponsoredDisplayRequests
     {
         return $this->operation("sd/campaigns/budgetRecommendations", $data, "POST");
     }
+
+    /**
+     * Gets a list of recommended bids for a targeting expression.
+     * @see https://advertising.amazon.com/API/docs/en-us/sponsored-display/3-0/openapi#tag/Targeting-Recommendations/operation/getTargetRecommendations
+     * @param $data
+     * @return array
+     * @throws Exception
+     */
+    public function getSDTargetsBidRecommendations($data = [])
+    {
+        return $this->operation("sd/targets/bid/recommendations", $data, "POST");
+    }
 }

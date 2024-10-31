@@ -283,7 +283,7 @@ trait SponsoredProductsRequests
      * @return array
      * @throws Exception
      */
-    public function getTargetableCategories(array $data): array
+    public function getSPTargetableCategories(array $data): array
     {
         return $this->operation('sp/targets/categories', $data);
     }
@@ -542,6 +542,17 @@ trait SponsoredProductsRequests
      * @throws Exception
      */
     public function getThemeBasedBidRecommendationForAdGroupV1(array $data): array
+    {
+        return $this->operation('sp/targets/bid/recommendations', $data, 'POST');
+    }
+
+    /**
+     * @param array $data
+     * @return array
+     * @throws Exception
+     * @see https://advertising.amazon.com/API/docs/en-us/sponsored-products/3-0/openapi/prod#tag/ThemeBasedBidRecommendation/operation/GetThemeBasedBidRecommendationForAdGroup_v1
+     */
+    public function getSPTargetsBidRecommendations(array $data): array
     {
         return $this->operation('sp/targets/bid/recommendations', $data, 'POST');
     }

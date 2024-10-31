@@ -56,6 +56,7 @@ class Client
         'appUserAgent' => '',
         'headerAccept' => '',
         'profileId' => 0,
+        'timeout' => 30,
     ];
 
     private $apiVersion;
@@ -172,11 +173,16 @@ class Client
             'Authorization: bearer ' . $this->config['accessToken'],
             'User-Agent: ' . $this->userAgent,
             'Amazon-Advertising-API-ClientId: ' . $this->config['clientId'],
+            'Accept-Encoding: gzip, deflate, br',//默认gzip
+            'Connection: keep-alive',//默认长连接
         );
         if (!is_null($this->profileId)) {
             $headers[] = 'Amazon-Advertising-API-Scope: ' . $this->profileId;
         }
-        $headers[] = 'Accept: application/' . $this->versions->getVersionJson('/' . $interface);
+        $accept = $this->versions->accept('/' . $interface);
+        //headers插入第一个数组
+        array_unshift($headers, $accept ? 'Accept: ' . $accept : 'Accept: application/' . $this->versions->getVersionJson('/' . $interface));
+
         $headers[] = 'Content-Type: application/' . $this->versions->getVersionJson('/' . $interface);
         if ($this->debug) {
             print_r($headers);
@@ -211,9 +217,12 @@ class Client
                 $this->logAndThrow("Unknown verb $method.");
         }
         $request->setOption(CURLOPT_URL, $url);
-        $request->setOption(CURLOPT_HTTPHEADER, $headers);
+        $request->setOption(CURLOPT_HTTPHEADER, $this->headers);
         $request->setOption(CURLOPT_USERAGENT, $this->userAgent);
         $request->setOption(CURLOPT_CUSTOMREQUEST, strtoupper($method));
+        //超时
+        $request->setOption(CURLOPT_TIMEOUT, $this->config['timeout'] ?? 30);
+        $request->setOption(CURLOPT_CONNECTTIMEOUT, 5); // 连接超时5秒
         return $this->executeRequest($request);
     }
 

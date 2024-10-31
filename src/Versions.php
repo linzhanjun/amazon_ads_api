@@ -24,7 +24,7 @@ class Versions
         '/sp/negativeKeywords/list' => 'vnd.spNegativeKeyword.v3+json',
         '/sp/negativeKeywords' => 'vnd.spNegativeKeyword.v3+json',
         '/sp/targets/products/count' => 'vnd.spproducttargeting.v3+json',
-        '/sp/targets/categories' => 'vnd.spproducttargetingresponse.v5+json',
+        '/sp/targets/categories' => 'vnd.spproducttargeting.v3+json',
         '/sp/negativeTargets/brands/search' => 'vnd.spproducttargeting.v3+json',
         '/sp/targets/category/{categoryId}/refinements' => 'vnd.spproducttargetingresponse.v4+json',
         '/sp/targets/categories/recommendations' => 'vnd.spproducttargeting.v3+json',
@@ -78,10 +78,40 @@ class Versions
         '/sp/campaigns/budget/usage' => 'vnd.spcampaignbudgetusage.v1+json',
         '/sb/v4/campaigns' => 'vnd.sbcampaignresource.v4+json',
         '/sb/campaigns/budgetRecommendations' => 'vnd.sbbudgetrecommendation.v4+json',
+        '/sb/recommendations/bids' => 'json',
         '/sd/campaigns/budgetRecommendations' => 'vnd.sdbudgetrecommendations.v3+json',
+        '/sd/targets/bid/recommendations' => 'vnd.sdtargetingrecommendations.v3.3+json',
         '/sb/v4/adGroups' => 'vnd.sbadgroupresource.v4+json',
+        '/sb/v4/campaigns/list' => 'vnd.sbcampaignresource.v4+json',
+        '/sb/v4/adGroups/list' => 'vnd.sbadgroupresource.v4+json',
         '/sb/targets' => 'json',
+        '/sb/keywords' => 'json',
+        '/sb/targets/{{targetId}}' => 'vnd.sbtarget.v3+json',
     );
+
+    public $accepts = [
+        '/sb/targets' => '*/*',
+        '/sb/keywords' => '*/*',
+        '/sb/targets/{targetId}' => '*/*',
+        '/brands' => 'application/vnd.brand.v3+json',
+        '/sb/recommendations/bids' => '*/*',
+        //'/sp/targets/categories' => 'application/vnd.spproducttargetingresponse.v5+json',//返回不了信息暂时不支持语言
+    ];
+
+    public function accept($path = '')
+    {
+        if (isset($this->accepts[$path])) {
+            return $this->accepts[$path];
+        }
+        foreach ($this->accepts as $pattern => $value) {
+            $regex = preg_replace('/\{[^}]+\}/', '([^/]+)', $pattern);
+            $regex = str_replace('/', '\/', $regex);
+            if (preg_match('/^' . $regex . '$/', $path)) {
+                return $value;
+            }
+        }
+        return '';
+    }
 
     public function getVersionJson($path = '')
     {
