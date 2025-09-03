@@ -19,6 +19,7 @@ class Client
     use SponsoredDisplayRequests;
     use ProductsRequests;
     use AccountsRequests;
+    use PortfoliosRequests;
     use StoresRequests;
     use AssetsRequests;
     use ReportingRequests;
@@ -148,10 +149,11 @@ class Client
      * @return array
      * @throws Exception
      */
-    public function doRefreshToken($refresh_token)
+    public function doRefreshToken($config = [])
     {
-        $this->config['accessToken'] = $refresh_token;
-
+        if ($config) {
+            $this->config = $config;
+        }
     }
 
     /**

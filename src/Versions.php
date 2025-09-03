@@ -86,16 +86,28 @@ class Versions
         '/sb/v4/adGroups/list' => 'vnd.sbadgroupresource.v4+json',
         '/sb/targets' => 'json',
         '/sb/keywords' => 'json',
+        '/sb/negativeKeywords' => 'json',
+        '/sb/negativeTargets' => 'json',
         '/sb/targets/{{targetId}}' => 'vnd.sbtarget.v3+json',
+        '/sb/negativeKeywords/{keywordId}' => 'json',
+        '/bp/v2/products/list' => 'vnd.bpProduct.v2+json',
+        '/assets/upload' => 'json',
+        '/portfolios' => 'vnd.spPortfolio.v3+json',
+        '/portfolios/list' => 'vnd.spPortfolio.v3+json',
+        '/portfolios/budget/usage' => 'vnd.portfoliobudgetusage.v1+json',
     );
 
     public $accepts = [
         '/sb/targets' => '*/*',
         '/sb/keywords' => '*/*',
+        '/sb/negativeKeywords' => '*/*',
+        '/sb/negativeKeywords/{keywordId}' => '*/*',
+        '/sb/negativeTargets/{negativeTargetId}' => '*/*',
+        '/sb/negativeTargets' => '*/*',
         '/sb/targets/{targetId}' => '*/*',
         '/brands' => 'application/vnd.brand.v3+json',
         '/sb/recommendations/bids' => '*/*',
-        //'/sp/targets/categories' => 'application/vnd.spproducttargetingresponse.v5+json',//返回不了信息暂时不支持语言
+        '/assets/upload' => '*/*'
     ];
 
     public function accept($path = '')
