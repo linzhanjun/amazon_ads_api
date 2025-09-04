@@ -122,16 +122,13 @@ trait PostsRequests
         return $this->operation("bp/v2/profiles/$profileId/metrics/download");
     }
 
-    /**
-     * Get a list of Post Profiles that the advertiser has access to.
-     * @see https://advertising.amazon.com/API/docs/en-us/posts#tag/Posts/operation/ListProfiles
-     * @param string $profileId
-     * @param array|null $data
-     * @return array
-     * @throws Exception
-     */
-    public function listPostsProfiles(string $profileId, ?array $data): array
+    public function listPostsProfiles(): array
     {
-        return $this->operation("bp/v2/profiles/$profileId/metrics/download", $data);
+        return $this->operation("bp/v2/profiles");
+    }
+
+    public function setUnpublish(string $postId, $data): array
+    {
+        return $this->operation("bp/v2/posts/$postId/unpublish", $data, 'PUT');
     }
 }

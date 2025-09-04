@@ -92,12 +92,16 @@ class Versions
         '/sb/negativeKeywords/{keywordId}' => 'json',
         '/bp/v2/products/list' => 'vnd.bpProduct.v2+json',
         '/assets/upload' => 'json',
+        '/bp/v2/posts/{postId}/unpublish' => 'vnd.bpPost.v2+json',
+        '/bp/v2/posts/{postId}' => 'vnd.bpPost.v2+json',
+        '/sb/themes' => 'json',
         '/portfolios' => 'vnd.spPortfolio.v3+json',
         '/portfolios/list' => 'vnd.spPortfolio.v3+json',
         '/portfolios/budget/usage' => 'vnd.portfoliobudgetusage.v1+json',
     );
 
     public $accepts = [
+        '/sb/themes' => '*/*',
         '/sb/targets' => '*/*',
         '/sb/keywords' => '*/*',
         '/sb/negativeKeywords' => '*/*',
@@ -107,7 +111,8 @@ class Versions
         '/sb/targets/{targetId}' => '*/*',
         '/brands' => 'application/vnd.brand.v3+json',
         '/sb/recommendations/bids' => '*/*',
-        '/assets/upload' => '*/*'
+        '/assets/upload' => '*/*',
+        '/bp/v2/posts/{postId}/unpublish' => '*/*',
     ];
 
     public function accept($path = '')
