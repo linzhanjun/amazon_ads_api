@@ -177,6 +177,7 @@ class Client
             'Amazon-Advertising-API-ClientId: ' . $this->config['clientId'],
             'Accept-Encoding: gzip, deflate, br',//默认gzip
             'Connection: keep-alive',//默认长连接
+            'Prefer: return=representation',//默认返回representation
         );
         if (!is_null($this->profileId)) {
             $headers[] = 'Amazon-Advertising-API-Scope: ' . $this->profileId;
